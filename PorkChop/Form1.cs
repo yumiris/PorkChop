@@ -30,16 +30,16 @@ namespace PorkChop
 
 
 
-    public partial class Form1 : Form
+    public partial class PorkChop : Form
     {
-        public Form1()
+        public PorkChop()
         {
             InitializeComponent();
         }
 
 
 
-        public void Chop(string FHost)
+        public void BatchChop(string FHost)
         {
             
 
@@ -54,7 +54,10 @@ namespace PorkChop
             foreach (var soundtag in files)
             {
                 var filename = Path.GetFullPath(soundtag);
-                string displaytext = "";
+                
+                int permutation_count = 0;
+
+                MessageBox.Show(filename);
 
                 using (var fs = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.ReadWrite))
                 using (var ms = new MemoryStream())
@@ -66,19 +69,50 @@ namespace PorkChop
                     fs.CopyTo(ms);
                     ms.Position = 0;
 
-                    br.BaseStream.Seek(288, SeekOrigin.Begin);
 
-                    displaytext = br.ReadInt32().ToString();
+                    bw.BaseStream.Seek(64, SeekOrigin.Begin);
+                    bw.Write(2);
+
+                    
+
+                    br.BaseStream.Seek(288, SeekOrigin.Begin);
+                    permutation_count = br.ReadInt32();
+                    MessageBox.Show(permutation_count.ToString());
+
+                   
+
+                    bw.BaseStream.Seek(342, SeekOrigin.Begin);
+                    for (int i = 0; i < permutation_count; i++)
+                    {
+
+                        if (i != (permutation_count-1))
+                        {
+                            bw.Write((Int16)(i + 1));
+                        }
+                        else
+                        {
+                            bw.Write((Int16)(-1));
+                        }
+                        
+                        bw.BaseStream.Seek(122, SeekOrigin.Current);
+
+                        MessageBox.Show(permutation_count.ToString() + "--" + i.ToString());
+
+                    }
+
+                    
 
                     ms.Position = 0;
+                    fs.Position = 0;
                     ms.CopyTo(fs);
 
+                    MessageBox.Show("Done");
 
-
-                    MessageBox.Show(displaytext);
+                    
                 }
 
                 Directory.CreateDirectory(Path.GetDirectoryName(soundtag));
+
 
                 
             }
@@ -110,7 +144,7 @@ namespace PorkChop
 
         private void Chop_Click(object sender, EventArgs e)
         {
-            Chop(dir.Text);
+            BatchChop(dir.Text);
         }
     }
 }

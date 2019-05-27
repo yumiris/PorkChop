@@ -1,9 +1,12 @@
-E:\porkchop\PorkChop\PorkChop\bin\Debug\PorkChop.exe
 E:\porkchop\PorkChop\PorkChop\bin\Debug\PorkChop.pdb
 E:\porkchop\PorkChop\PorkChop\obj\Debug\PorkChop.csprojAssemblyReference.cache
-E:\porkchop\PorkChop\PorkChop\obj\Debug\PorkChop.Form1.resources
 E:\porkchop\PorkChop\PorkChop\obj\Debug\PorkChop.Properties.Resources.resources
 E:\porkchop\PorkChop\PorkChop\obj\Debug\PorkChop.csproj.GenerateResource.cache
 E:\porkchop\PorkChop\PorkChop\obj\Debug\PorkChop.csproj.CoreCompileInputs.cache
-E:\porkchop\PorkChop\PorkChop\obj\Debug\PorkChop.exe
 E:\porkchop\PorkChop\PorkChop\obj\Debug\PorkChop.pdb
+E:\porkchop\PorkChop\PorkChop\bin\Debug\Be.IO.dll
+E:\porkchop\PorkChop\PorkChop\bin\Debug\Be.IO.xml
+E:\porkchop\PorkChop\PorkChop\obj\Debug\PorkChop.csproj.CopyComplete
+E:\porkchop\PorkChop\PorkChop\bin\Debug\PorkChop.exe
+E:\porkchop\PorkChop\PorkChop\obj\Debug\PorkChop.exe
+E:\porkchop\PorkChop\PorkChop\obj\Debug\PorkChop.PorkChop.resources
