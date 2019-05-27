@@ -62,7 +62,7 @@ namespace PorkChop
                 using (var br = new Be.IO.BeBinaryReader(ms))
                 {
 
-                    br.
+//                    br.
                     fs.CopyTo(ms);
                     ms.Position = 0;
 
