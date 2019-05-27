@@ -110,13 +110,13 @@ namespace PorkChop
 
                     
                 }
-                MessageBox.Show("Done");
+                
 
 
                 
             }
 
-            
+            MessageBox.Show("Converted "+files.Count().ToString()+" files");
         }
 
 
