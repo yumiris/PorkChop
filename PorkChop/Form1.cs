@@ -57,7 +57,7 @@ namespace PorkChop
                 
                 int permutation_count = 0;
 
-                MessageBox.Show(filename);
+                
 
                 using (var fs = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.ReadWrite))
                 using (var ms = new MemoryStream())
@@ -77,7 +77,7 @@ namespace PorkChop
 
                     br.BaseStream.Seek(288, SeekOrigin.Begin);
                     permutation_count = br.ReadInt32();
-                    MessageBox.Show(permutation_count.ToString());
+                    
 
                    
 
@@ -96,7 +96,7 @@ namespace PorkChop
                         
                         bw.BaseStream.Seek(122, SeekOrigin.Current);
 
-                        MessageBox.Show(permutation_count.ToString() + "--" + i.ToString());
+                       
 
                     }
 
@@ -106,12 +106,11 @@ namespace PorkChop
                     fs.Position = 0;
                     ms.CopyTo(fs);
 
-                    MessageBox.Show("Done");
+                    
 
                     
                 }
-
-                Directory.CreateDirectory(Path.GetDirectoryName(soundtag));
+                MessageBox.Show("Done");
 
 
                 
