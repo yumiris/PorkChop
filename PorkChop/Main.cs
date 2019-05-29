@@ -6,8 +6,21 @@ using Be.IO;
 
 namespace PorkChop
 {
+
+
+
+    
+    
     public partial class PorkChop : Form
     {
+
+
+        string HaloDir = "";
+
+        string settings_path = Path.Combine(Environment.GetFolderPath(
+    Environment.SpecialFolder.ApplicationData), "PorkChop.txt");
+
+
         public PorkChop()
         {
             InitializeComponent();
@@ -19,6 +32,11 @@ namespace PorkChop
 
             foreach (var soundtag in files)
             {
+
+
+
+
+
                 var filename = Path.GetFullPath(soundtag);
 
                 int permutation_count;
@@ -60,7 +78,50 @@ namespace PorkChop
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            ForceMaps();
         }
+
+
+
+        private void ForceMaps()
+        {
+            if (File.Exists(settings_path))
+            {
+                HaloDir = File.ReadAllText(settings_path);
+                halobox.Text = "Halo Folder - " + HaloDir;
+            }
+            else
+            {
+                MessageBox.Show("Please select your Halo Folder");
+                setMapsFolder();
+                ForceMaps();
+            }
+        }
+
+        private void setMapsFolder()
+        {
+
+
+
+
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            fbd.ShowNewFolderButton = false;
+
+
+            if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                HaloDir = fbd.SelectedPath;
+
+
+                MessageBox.Show(HaloDir);
+                System.IO.File.WriteAllText(settings_path, HaloDir);
+            }
+
+                halobox.Text = "Halo Folder - " + HaloDir;
+            
+
+        }
+
 
         private void brwsbtn(object sender, EventArgs e)
         {
@@ -72,7 +133,22 @@ namespace PorkChop
 
         private void Chop_Click(object sender, EventArgs e)
         {
-            BatchChop(dir.Text);
+            Codec.Encode(dir.Text, HaloDir);
+        }
+
+        private void CheckBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TextBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void HaloPath_Click(object sender, EventArgs e)
+        {
+            ForceMaps();
         }
     }
 }

@@ -41,9 +41,10 @@ namespace PorkChop
         /// <param name="mp3">
         ///     MP3 file on the filesystem.
         /// </param>
-        public static async void Encode(string mp3)
+        public static void Encode(string mp3 , string halofolder)
         {
             CheckUp(); /* checks the current env */
+            
             Prepare(); /* create directories */
             Execute(); /* encode the mp3 */
             CleanUp(); /* clean up files */
@@ -75,7 +76,7 @@ namespace PorkChop
             {
                 var directories = new List<string>
                 {
-                    Combine(CurrentDirectory, "data"),
+                    Combine(halofolder, "data"),
                     Combine(CurrentDirectory, "temp")
                 };
 
@@ -124,7 +125,7 @@ namespace PorkChop
             void CleanUp()
             {
                 var tempDir  = Combine(CurrentDirectory, "temp");
-                var dataDir  = Combine(CurrentDirectory, "data");
+                var dataDir  = Combine(halofolder, "DATA\\PORKCHOP");
                 var wavFiles = new DirectoryInfo(tempDir).GetFiles("*.wav", TopDirectoryOnly);
                 var oggFiles = new DirectoryInfo(tempDir).GetFiles("*.ogg", TopDirectoryOnly);
 
@@ -151,8 +152,8 @@ namespace PorkChop
                 {
                     new Process
                     {
-                        Executable = Combine(CurrentDirectory, "tool.exe"),
-                        Arguments  = "sounds data ogg 1"
+                        Executable = Combine(halofolder, "tool.exe"),
+                        Arguments  = "sounds DATA\\PORKCHOP ogg 1"
                     }.Start().WaitForExit();
                 });
             }
@@ -176,7 +177,7 @@ namespace PorkChop
             {
                 return System.Diagnostics.Process.Start(new ProcessStartInfo
                 {
-                    WindowStyle = Hidden,
+                    
                     FileName    = Executable,
                     Arguments   = Arguments
                 });
