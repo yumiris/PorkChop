@@ -18,12 +18,38 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+using System;
+using System.IO;
+using PorkChop.Library;
+
 namespace PorkChop.CLI
 {
-  internal class Program
+  /// <summary>
+  ///   CLI for PorkChop.
+  /// </summary>
+  internal static class Program
   {
     public static void Main(string[] args)
     {
+      if (args.Length < 2)
+        Exit(1, "Not enough args.");
+
+      var mp3 = args[0];
+      var dir = args[1];
+
+      if (!File.Exists(mp3))
+        Exit(2, "MP3 not found.");
+
+      if (!Directory.Exists(dir))
+        Exit(3, "Directory not found.");
+
+      Codec.Encode(mp3, dir);
+
+      void Exit(int code, string message)
+      {
+        Console.WriteLine(message);
+        Environment.Exit(code);
+      }
     }
   }
 }
