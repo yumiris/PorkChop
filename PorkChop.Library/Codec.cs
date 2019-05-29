@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+using static System.Console;
 
 namespace PorkChop.Library
 {
@@ -37,14 +38,15 @@ namespace PorkChop.Library
         /// <param name="mp3">
         ///     MP3 file on the filesystem.
         /// </param>
-        public static void Encode(string mp3 , string halofolder)
+        public static void Encode(string mp3, string halofolder)
         {
+            WriteLine("Initiate encoding process");
             CheckUp(); /* checks the current env */
-            
             Prepare(); /* create directories */
             Execute(); /* encode the mp3 */
             CleanUp(); /* clean up files */
             Compile(); /* executes tool.exe */
+            WriteLine("Finished encoding process");
 
             /**
              * Verify that the current environment meets the dependency requirements.
@@ -60,7 +62,9 @@ namespace PorkChop.Library
                 };
 
                 foreach (var dependency in dependencies)
-                    if (!File.Exists(dependency))
+                    if (File.Exists(dependency))
+                        WriteLine("CHECKUP: Dependency found - " + dependency);
+                    else
                         throw new FileNotFoundException("Dependency not found - " + dependency);
             }
 
@@ -72,12 +76,15 @@ namespace PorkChop.Library
             {
                 var directories = new List<string>
                 {
-                    Path.Combine(halofolder, "data"),
+                    Path.Combine(halofolder,                   "data"),
                     Path.Combine(Environment.CurrentDirectory, "temp")
                 };
 
                 foreach (var directory in directories)
+                {
                     Directory.CreateDirectory(directory);
+                    WriteLine("PREPARE: Created directory - " + directory);
+                }
             }
 
             /**
@@ -111,7 +118,11 @@ namespace PorkChop.Library
                 };
 
                 foreach (var process in processes)
+                {
+                    WriteLine("EXECUTE: Initiate - " + process.Executable);
                     await Task.Run(() => { process.Start().WaitForExit(); });
+                    WriteLine("EXECUTE: Finished - " + process.Executable);
+                }
             }
 
             /**
@@ -121,21 +132,26 @@ namespace PorkChop.Library
             void CleanUp()
             {
                 var tempDir  = Path.Combine(Environment.CurrentDirectory, "temp");
-                var dataDir  = Path.Combine(halofolder, "DATA\\PORKCHOP");
+                var dataDir  = Path.Combine(halofolder,                   "DATA\\PORKCHOP");
                 var wavFiles = new DirectoryInfo(tempDir).GetFiles("*.wav", SearchOption.TopDirectoryOnly);
                 var oggFiles = new DirectoryInfo(tempDir).GetFiles("*.ogg", SearchOption.TopDirectoryOnly);
 
                 foreach (var wavFile in wavFiles)
                 {
-                    File.Copy(wavFile.FullName, Path.Combine(dataDir, wavFile.Name));
-                    File.Delete(wavFile.FullName);
+                    File.Move(wavFile.FullName, Path.Combine(dataDir, wavFile.Name));
+                    WriteLine("CLEANUP: Moved WAV - " + wavFile.Name);
                 }
 
                 foreach (var oggFile in oggFiles)
+                {
                     File.Delete(oggFile.FullName);
+                    WriteLine("CLEANUP: Deleted OGG - " + oggFile.Name);
+                }
 
                 File.Delete("temp.mp3");
                 File.Delete(Path.Combine(tempDir, "temp.ogg"));
+
+                WriteLine("CLEANUP: Deleted remaining data");
             }
 
             /**
@@ -173,9 +189,8 @@ namespace PorkChop.Library
             {
                 return System.Diagnostics.Process.Start(new ProcessStartInfo
                 {
-                    
-                    FileName    = Executable,
-                    Arguments   = Arguments
+                    FileName  = Executable,
+                    Arguments = Arguments
                 });
             }
         }
