@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using static System.IO.SearchOption;
@@ -127,6 +128,31 @@ namespace PorkChop
                         Executable = "tool.exe",
                         Arguments  = "sounds data ogg 1"
                     }.Start().WaitForExit();
+                });
+            }
+        }
+
+        /// <summary>
+        ///     Simple wrapper around the Diagnostics Process.
+        /// </summary>
+        public class Process
+        {
+            public string Executable { get; set; } /* executable to invoke */
+            public string Arguments  { get; set; } /* arguments to pass onto the specified executable */
+
+            /// <summary>
+            ///     Invokes the inbound executable with the inbound arguments.
+            /// </summary>
+            /// <remarks>
+            ///     The executable will be invoked silently/in the background.
+            /// </remarks>
+            public System.Diagnostics.Process Start()
+            {
+                return System.Diagnostics.Process.Start(new ProcessStartInfo
+                {
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    FileName    = Executable,
+                    Arguments   = Arguments
                 });
             }
         }
