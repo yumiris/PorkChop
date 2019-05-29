@@ -91,7 +91,7 @@ namespace PorkChop.Library
              * Asynchronously runs the encoding processes.
              */
 
-            async void Execute()
+            void Execute()
             {
                 var processes = new List<Process>
                 {
@@ -120,7 +120,7 @@ namespace PorkChop.Library
                 foreach (var process in processes)
                 {
                     WriteLine("EXECUTE: Initiate - " + process.Executable);
-                    await Task.Run(() => { process.Start().WaitForExit(); });
+                    process.Start().WaitForExit();
                     WriteLine("EXECUTE: Finished - " + process.Executable);
                 }
             }
