@@ -40,10 +40,29 @@ namespace PorkChop
         /// </param>
         public static async void Encode(string mp3)
         {
+            CheckUp(); /* checks the current env */
             Prepare(); /* create directories */
             Execute(); /* encode the mp3 */
             CleanUp(); /* clean up files */
             Compile(); /* executes tool.exe */
+
+            /**
+             * Verify that the current environment meets the dependency requirements.
+             */
+
+            void CheckUp()
+            {
+                var dependencies = new List<string>
+                {
+                    Path.Combine(Environment.CurrentDirectory, "convcodec.exe"),
+                    Path.Combine(Environment.CurrentDirectory, "conv.exe"),
+                    Path.Combine(Environment.CurrentDirectory, "premu.exe")
+                };
+
+                foreach (var dependency in dependencies)
+                    if (!File.Exists(dependency))
+                        throw new FileNotFoundException("Dependency not found - " + dependency);
+            }
 
             /**
              * Gracefully create the directories which will be used for the encoding process.
