@@ -39,13 +39,13 @@ namespace PorkChop
         /// <remarks>
         ///     The executable will be invoked silently/in the background.
         /// </remarks>
-        public void Start(string executable, string arguments)
+        public System.Diagnostics.Process Start(string executable, string arguments)
         {
-            System.Diagnostics.Process.Start(new ProcessStartInfo
+            return System.Diagnostics.Process.Start(new ProcessStartInfo
             {
                 WindowStyle = ProcessWindowStyle.Hidden,
-                FileName    = "cmd.exe",
-                Arguments   = "/C -command-"
+                FileName    = executable,
+                Arguments   = arguments
             });
         }
     }
