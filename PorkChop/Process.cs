@@ -25,7 +25,7 @@ namespace PorkChop
     /// <summary>
     ///     Simple wrapper around the Diagnostics Process.
     /// </summary>
-    public class Process
+    public static class Process
     {
         /// <summary>
         ///     Invokes the inbound executable with the inbound arguments.
@@ -39,7 +39,7 @@ namespace PorkChop
         /// <remarks>
         ///     The executable will be invoked silently/in the background.
         /// </remarks>
-        public System.Diagnostics.Process Start(string executable, string arguments)
+        public static System.Diagnostics.Process Start(string executable, string arguments)
         {
             return System.Diagnostics.Process.Start(new ProcessStartInfo
             {
