@@ -18,12 +18,15 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Threading.Tasks;
+using static System.Diagnostics.ProcessWindowStyle;
+using static System.Environment;
+using static System.IO.File;
+using static System.IO.Path;
 using static System.IO.SearchOption;
+using static System.Threading.Tasks.Task;
 
 namespace PorkChop
 {
@@ -54,25 +57,26 @@ namespace PorkChop
             {
                 var dependencies = new List<string>
                 {
-                    Path.Combine(Environment.CurrentDirectory, "convcodec.exe"),
-                    Path.Combine(Environment.CurrentDirectory, "conv.exe"),
-                    Path.Combine(Environment.CurrentDirectory, "premu.exe")
+                    Combine(CurrentDirectory, "convcodec.exe"),
+                    Combine(CurrentDirectory, "conv.exe"),
+                    Combine(CurrentDirectory, "premu.exe")
                 };
 
                 foreach (var dependency in dependencies)
-                    if (!File.Exists(dependency))
+                    if (!Exists(dependency))
                         throw new FileNotFoundException("Dependency not found - " + dependency);
             }
 
             /**
              * Gracefully create the directories which will be used for the encoding process.
              */
+
             void Prepare()
             {
                 var directories = new List<string>
                 {
-                    Path.Combine(Environment.CurrentDirectory, "data"),
-                    Path.Combine(Environment.CurrentDirectory, "temp")
+                    Combine(CurrentDirectory, "data"),
+                    Combine(CurrentDirectory, "temp")
                 };
 
                 foreach (var directory in directories)
@@ -82,69 +86,72 @@ namespace PorkChop
             /**
              * Asynchronously runs the encoding processes.
              */
+
             async void Execute()
             {
                 var processes = new List<Process>
                 {
                     new Process
                     {
-                        Executable = "convcodec.exe",
+                        Executable = Combine(CurrentDirectory, "convcodec.exe"),
                         Arguments  = $"\"{mp3}\" temp.wav /v /R44100 /B16 /C2 /#"
                     },
                     new Process
                     {
-                        Executable = "conv.exe",
+                        Executable = Combine(CurrentDirectory, "conv.exe"),
                         Arguments  = "-of 44100 -oc2 -ob16 -idel temp.wav temp\\temp.ogg"
                     },
                     new Process
                     {
-                        Executable = "premu.exe",
+                        Executable = Combine(CurrentDirectory, "premu.exe"),
                         Arguments  = "-o@n -d temp -t 0.30 temp\\temp.ogg"
                     },
                     new Process
                     {
-                        Executable = "conv.exe",
+                        Executable = Combine(CurrentDirectory, "conv.exe"),
                         Arguments  = "-llw CONVLIST.LST -of 44100 -oc2 -ob16  -idel"
                     }
                 };
 
                 foreach (var process in processes)
-                    await Task.Run(() => { process.Start().WaitForExit(); });
+                    await Run(() => { process.Start().WaitForExit(); });
             }
 
             /**
              * Cleans up temporary files and moves the encoded WAV.
              */
+
             void CleanUp()
             {
-                var tempDir  = Path.Combine(Environment.CurrentDirectory, "temp");
-                var dataDir  = Path.Combine(Environment.CurrentDirectory, "data");
+                var tempDir  = Combine(CurrentDirectory, "temp");
+                var dataDir  = Combine(CurrentDirectory, "data");
                 var wavFiles = new DirectoryInfo(tempDir).GetFiles("*.wav", TopDirectoryOnly);
                 var oggFiles = new DirectoryInfo(tempDir).GetFiles("*.ogg", TopDirectoryOnly);
 
                 foreach (var wavFile in wavFiles)
                 {
-                    File.Copy(wavFile.FullName, Path.Combine(dataDir, wavFile.Name));
-                    File.Delete(wavFile.FullName);
+                    Copy(wavFile.FullName, Combine(dataDir, wavFile.Name));
+                    Delete(wavFile.FullName);
                 }
 
                 foreach (var oggFile in oggFiles)
-                    File.Delete(oggFile.FullName);
+                    Delete(oggFile.FullName);
 
-                File.Delete("temp.mp3");
-                File.Delete(Path.Combine(tempDir, "temp.ogg"));
+                Delete("temp.mp3");
+                Delete(Combine(tempDir, "temp.ogg"));
             }
 
             /**
              * Invokes tool.exe for compiling the sounds in the data directory.
              */
+
             async void Compile()
             {
-                await Task.Run(() =>
+                await Run(() =>
                 {
                     new Process
                     {
-                        Executable = "tool.exe",
+                        Executable = Combine(CurrentDirectory, "tool.exe"),
                         Arguments  = "sounds data ogg 1"
                     }.Start().WaitForExit();
                 });
@@ -169,7 +176,7 @@ namespace PorkChop
             {
                 return System.Diagnostics.Process.Start(new ProcessStartInfo
                 {
-                    WindowStyle = ProcessWindowStyle.Hidden,
+                    WindowStyle = Hidden,
                     FileName    = Executable,
                     Arguments   = Arguments
                 });
