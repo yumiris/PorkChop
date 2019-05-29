@@ -18,17 +18,13 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using static System.Diagnostics.ProcessWindowStyle;
-using static System.Environment;
-using static System.IO.File;
-using static System.IO.Path;
-using static System.IO.SearchOption;
-using static System.Threading.Tasks.Task;
+using System.Threading.Tasks;
 
-namespace PorkChop
+namespace PorkChop.Library
 {
     /// <summary>
     ///     Splits and encodes an inbound MP3 file.
@@ -58,13 +54,13 @@ namespace PorkChop
             {
                 var dependencies = new List<string>
                 {
-                    Combine(CurrentDirectory, "convcodec.exe"),
-                    Combine(CurrentDirectory, "conv.exe"),
-                    Combine(CurrentDirectory, "premu.exe")
+                    Path.Combine(Environment.CurrentDirectory, "convcodec.exe"),
+                    Path.Combine(Environment.CurrentDirectory, "conv.exe"),
+                    Path.Combine(Environment.CurrentDirectory, "premu.exe")
                 };
 
                 foreach (var dependency in dependencies)
-                    if (!Exists(dependency))
+                    if (!File.Exists(dependency))
                         throw new FileNotFoundException("Dependency not found - " + dependency);
             }
 
@@ -76,8 +72,8 @@ namespace PorkChop
             {
                 var directories = new List<string>
                 {
-                    Combine(halofolder, "data"),
-                    Combine(CurrentDirectory, "temp")
+                    Path.Combine(halofolder, "data"),
+                    Path.Combine(Environment.CurrentDirectory, "temp")
                 };
 
                 foreach (var directory in directories)
@@ -94,28 +90,28 @@ namespace PorkChop
                 {
                     new Process
                     {
-                        Executable = Combine(CurrentDirectory, "convcodec.exe"),
+                        Executable = Path.Combine(Environment.CurrentDirectory, "convcodec.exe"),
                         Arguments  = $"\"{mp3}\" temp.wav /v /R44100 /B16 /C2 /#"
                     },
                     new Process
                     {
-                        Executable = Combine(CurrentDirectory, "conv.exe"),
+                        Executable = Path.Combine(Environment.CurrentDirectory, "conv.exe"),
                         Arguments  = "-of 44100 -oc2 -ob16 -idel temp.wav temp\\temp.ogg"
                     },
                     new Process
                     {
-                        Executable = Combine(CurrentDirectory, "premu.exe"),
+                        Executable = Path.Combine(Environment.CurrentDirectory, "premu.exe"),
                         Arguments  = "-o@n -d temp -t 0.30 temp\\temp.ogg"
                     },
                     new Process
                     {
-                        Executable = Combine(CurrentDirectory, "conv.exe"),
+                        Executable = Path.Combine(Environment.CurrentDirectory, "conv.exe"),
                         Arguments  = "-llw CONVLIST.LST -of 44100 -oc2 -ob16  -idel"
                     }
                 };
 
                 foreach (var process in processes)
-                    await Run(() => { process.Start().WaitForExit(); });
+                    await Task.Run(() => { process.Start().WaitForExit(); });
             }
 
             /**
@@ -124,22 +120,22 @@ namespace PorkChop
 
             void CleanUp()
             {
-                var tempDir  = Combine(CurrentDirectory, "temp");
-                var dataDir  = Combine(halofolder, "DATA\\PORKCHOP");
-                var wavFiles = new DirectoryInfo(tempDir).GetFiles("*.wav", TopDirectoryOnly);
-                var oggFiles = new DirectoryInfo(tempDir).GetFiles("*.ogg", TopDirectoryOnly);
+                var tempDir  = Path.Combine(Environment.CurrentDirectory, "temp");
+                var dataDir  = Path.Combine(halofolder, "DATA\\PORKCHOP");
+                var wavFiles = new DirectoryInfo(tempDir).GetFiles("*.wav", SearchOption.TopDirectoryOnly);
+                var oggFiles = new DirectoryInfo(tempDir).GetFiles("*.ogg", SearchOption.TopDirectoryOnly);
 
                 foreach (var wavFile in wavFiles)
                 {
-                    Copy(wavFile.FullName, Combine(dataDir, wavFile.Name));
-                    Delete(wavFile.FullName);
+                    File.Copy(wavFile.FullName, Path.Combine(dataDir, wavFile.Name));
+                    File.Delete(wavFile.FullName);
                 }
 
                 foreach (var oggFile in oggFiles)
-                    Delete(oggFile.FullName);
+                    File.Delete(oggFile.FullName);
 
-                Delete("temp.mp3");
-                Delete(Combine(tempDir, "temp.ogg"));
+                File.Delete("temp.mp3");
+                File.Delete(Path.Combine(tempDir, "temp.ogg"));
             }
 
             /**
@@ -148,11 +144,11 @@ namespace PorkChop
 
             async void Compile()
             {
-                await Run(() =>
+                await Task.Run(() =>
                 {
                     new Process
                     {
-                        Executable = Combine(halofolder, "tool.exe"),
+                        Executable = Path.Combine(halofolder, "tool.exe"),
                         Arguments  = "sounds DATA\\PORKCHOP ogg 1"
                     }.Start().WaitForExit();
                 });
