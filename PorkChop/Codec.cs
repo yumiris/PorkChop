@@ -30,7 +30,7 @@ namespace PorkChop
     /// <summary>
     ///     Splits and encodes an inbound MP3 file.
     /// </summary>
-    public class Codec
+    public static class Codec
     {
         /// <summary>
         ///     Split and encodes an inbound MP3 file.
@@ -38,7 +38,7 @@ namespace PorkChop
         /// <param name="mp3">
         ///     MP3 file on the filesystem.
         /// </param>
-        public async void Encode(string mp3)
+        public static async void Encode(string mp3)
         {
             Prepare(); /* create directories */
             Execute(); /* encode the mp3 */
