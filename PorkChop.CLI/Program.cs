@@ -43,7 +43,14 @@ namespace PorkChop.CLI
             if (!Directory.Exists(dir))
                 Exit(3, "Directory not found.");
 
-            Codec.Encode(mp3, dir);
+            try
+            {
+                Codec.Encode(mp3, dir);
+            }
+            catch (Exception e)
+            {
+                Exit(4, e.Message);
+            }
 
             void Exit(int code, string message)
             {
