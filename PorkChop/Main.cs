@@ -137,7 +137,16 @@ namespace PorkChop
                 name = name.Replace(' ', '_');
                 status.Text = "Currently Processing -" + name;
 
-                Codec.Encode(soundfile, name, soundsample, soundchannel, soundtype, soundsplit, soundtime);
+                Codec.Encode(new Codec.Configuration
+                {
+                    Mp3File = soundfile,
+                    SoundName = name,
+                    SampleRate = soundsample,
+                    Channel = soundchannel,
+                    SoundType = soundtype,
+                    Split = soundsplit,
+                    SoundTime = soundtime
+                });
             }
             status.Text = "Completed - " + files.Count().ToString() + " files processed.";
         }

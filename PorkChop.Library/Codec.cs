@@ -34,25 +34,42 @@ namespace PorkChop.Library
     /// </summary>
     public static class Codec
     {
+        public class Configuration
+        {
+            public string Mp3File    { get; set; }
+            public string SoundName  { get; set; }
+            public string SampleRate { get; set; }
+            public string Channel    { get; set; }
+            public bool   SoundType  { get; set; }
+            public bool   Split      { get; set; }
+            public string SoundTime  { get; set; }
+        }
+
         /// <summary>
         ///     Split and encodes an inbound MP3 file.
         /// </summary>
-        /// <param name="mp3">
-        ///     MP3 file on the filesystem.
+        /// <param name="configuration">
+        ///     Configuration used for the encoding routine.
         /// </param>
-        public static void Encode(string mp3,   string soundname, string samplerate, string channel, bool stype,
-            bool                         split, string stime)
+        public static void Encode(Configuration configuration)
         {
+            var mp3        = configuration.Mp3File;    /* for compatibility with below code */
+            var soundname  = configuration.SoundName;  /* for compatibility with below code */
+            var samplerate = configuration.SampleRate; /* for compatibility with below code */
+            var channel    = configuration.Channel;    /* for compatibility with below code */
+            var stype      = configuration.SoundType;  /* for compatibility with below code */
+            var split      = configuration.Split;      /* for compatibility with below code */
+            var stime      = configuration.SoundTime;  /* for compatibility with below code */
+
             WriteLine("Initiate encoding process");
             CheckUp(); /* checks the current env */
             Prepare(); /* create directories */
             Execute(); /* encode the mp3 */
             CleanUp(); /* clean up files */
             Compile(); /* executes tool.exe */
+
             if (split)
-            {
                 Chop(); /* sets up the tag for split parts */
-            }
 
             WriteLine("Finished encoding process");
 
