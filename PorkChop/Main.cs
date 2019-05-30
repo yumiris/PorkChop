@@ -16,7 +16,7 @@ namespace PorkChop
     {
 
 
-        string HaloDir = "";
+        
 
         string settings_path = Path.Combine(Environment.GetFolderPath(
     Environment.SpecialFolder.ApplicationData), "PorkChop.txt");
@@ -96,7 +96,40 @@ namespace PorkChop
 
         private void Chop_Click(object sender, EventArgs e)
         {
-            Codec.Encode(dir.Text, TagName.Text);
+
+
+            string soundsample = "22050";
+            string soundchannel = "1";
+            bool soundsplit = false;
+            string soundtime = timebox.Text;
+
+            if (kbox44.Checked)
+            {
+               soundsample = "44100";
+            };
+
+            if (cbox2.Checked)
+            {
+               soundchannel = "2";
+            };
+
+            if (sbox.Checked)
+            {
+                soundsplit = true;
+            };
+
+
+
+            var files = Directory.GetFiles(dir.Text, "*", SearchOption.AllDirectories);
+
+            foreach (var soundfile in files)
+            {
+                string name = Path.GetFileNameWithoutExtension(soundfile);
+
+                
+
+                Codec.Encode(soundfile, name, soundsample, soundchannel, soundsplit, soundtime);
+            }
         }
 
         private void CheckBox1_CheckedChanged(object sender, EventArgs e)
