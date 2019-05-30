@@ -118,6 +118,19 @@ namespace PorkChop
             );
 
             status.Text = "Completed - " + files.Count() + " files processed.";
+
+            FinalClean();
+
+        }
+
+        void FinalClean()
+        {
+
+            Directory.Delete(Path.Combine(Environment.CurrentDirectory, "DATA"), true);
+            Directory.Delete(Path.Combine(Environment.CurrentDirectory, "temp"), true);
+            string presentday = DateTime.Now.ToString("MM-dd_HH-mm");
+            
+            Directory.Move(Path.Combine(Environment.CurrentDirectory, "tags"), Path.Combine(Environment.CurrentDirectory, presentday));
         }
 
         private void CheckBox1_CheckedChanged(object sender, EventArgs e)

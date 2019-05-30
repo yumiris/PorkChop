@@ -66,8 +66,9 @@ namespace PorkChop.Library
             CheckUp(); /* checks the current env */
             Prepare(); /* create directories */
             Execute(); /* encode the mp3 */
-            CleanUp(); /* clean up files */
+//            CleanUp(); /* clean up files */
             Compile(); /* executes tool.exe */
+            
 
             if (split)
                 Split(); /* sets up the tag for split parts */
@@ -119,6 +120,12 @@ namespace PorkChop.Library
 
             void Execute()
             {
+
+                string tempfolder = temp.ToString();
+
+                MakeList(tempfolder);
+                
+
                 var processes = split
                     ? new List<Process> /* split up sound */
                     {
@@ -130,17 +137,17 @@ namespace PorkChop.Library
                         new Process
                         {
                             Executable = Path.Combine(Environment.CurrentDirectory, "conv.exe"),
-                            Arguments  = $"-of {samplerate} -oc{channel} -ob16 -idel {temp}.wav temp\\{temp}.ogg"
+                            Arguments  = $"-of {samplerate} -oc{channel} -ob16 -idel {temp}.wav temp\\{tempfolder}\\{temp}.ogg"
                         },
                         new Process
                         {
                             Executable = Path.Combine(Environment.CurrentDirectory, "premu.exe"),
-                            Arguments  = $"-o@n -d temp -t {stime} temp\\{temp}.ogg"
+                            Arguments  = $"-o@n -d temp\\{tempfolder} -t {stime} temp\\{tempfolder}\\{temp}.ogg"
                         },
                         new Process
                         {
                             Executable = Path.Combine(Environment.CurrentDirectory, "conv.exe"),
-                            Arguments  = $"-llw CONVLIST.LST -of {samplerate} -oc{channel} -ob16  -idel"
+                            Arguments  = $"-llw temp\\{tempfolder}\\CONVLIST.LST -of {samplerate} -oc{channel} -ob16  -idel"
                         }
                     }
                     : new List<Process> /* straight sound */
@@ -163,15 +170,34 @@ namespace PorkChop.Library
                     process.Start().WaitForExit();
                     WriteLine("EXECUTE: Finished - " + process.Executable);
                 }
+                CleanUp(tempfolder);
+            }
+
+
+            void MakeList (string listfolder)
+            {
+                string listdir = Path.Combine(Environment.CurrentDirectory, "temp", listfolder);
+                string listfile = Path.Combine(listdir, "CONVLIST.LST");
+                
+                string writetext = "";
+
+                Directory.CreateDirectory(listdir);
+                System.IO.File.WriteAllText(listfile,"");
+
+                for (var i = 0; i != 60; i++)
+                {
+                    writetext = "temp\\" + listfolder +"\\"+ i.ToString("000") + ".ogg"+Environment.NewLine;
+                    System.IO.File.AppendAllText(listfile, writetext);
+                }
             }
 
             /**
              * Cleans up temporary files and moves the encoded WAV.
              */
 
-            void CleanUp()
+            void CleanUp(string oggfolder)
             {
-                var tempDir  = Path.Combine(Environment.CurrentDirectory, "temp");
+                var tempDir  = Path.Combine(Environment.CurrentDirectory, "temp", oggfolder);
                 var dataDir  = Path.Combine(Environment.CurrentDirectory, "DATA", soundname);
                 var wavFiles = new DirectoryInfo(tempDir).GetFiles("*.wav", SearchOption.TopDirectoryOnly);
                 var oggFiles = new DirectoryInfo(tempDir).GetFiles("*.ogg", SearchOption.TopDirectoryOnly);
@@ -206,9 +232,10 @@ namespace PorkChop.Library
                     Arguments  = "sounds " + soundname + " ogg 1"
                 }.Start().WaitForExit();
 
-                Directory.Delete(Path.Combine(Environment.CurrentDirectory, "DATA"), true);
+                
             }
 
+            
             /**
              * Splits up the audio data.
              */
