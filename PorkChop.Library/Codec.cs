@@ -76,7 +76,7 @@ namespace PorkChop.Library
             {
                 var directories = new List<string>
                 {
-                    Path.Combine(halofolder,                   "data"),
+                    Path.Combine(halofolder, "data", "PorkChop"),
                     Path.Combine(Environment.CurrentDirectory, "temp")
                 };
 
@@ -132,14 +132,14 @@ namespace PorkChop.Library
             void CleanUp()
             {
                 var tempDir  = Path.Combine(Environment.CurrentDirectory, "temp");
-                var dataDir  = Path.Combine(halofolder,                   "DATA\\PORKCHOP");
+                var dataDir  = Path.Combine(halofolder, "DATA" , "PorkChop");
                 var wavFiles = new DirectoryInfo(tempDir).GetFiles("*.wav", SearchOption.TopDirectoryOnly);
                 var oggFiles = new DirectoryInfo(tempDir).GetFiles("*.ogg", SearchOption.TopDirectoryOnly);
 
                 foreach (var wavFile in wavFiles)
                 {
                     File.Move(wavFile.FullName, Path.Combine(dataDir, wavFile.Name));
-                    WriteLine("CLEANUP: Moved WAV - " + wavFile.Name);
+                    WriteLine("CLEANUP: Moved WAV - " + Path.Combine(dataDir, wavFile.Name));
                 }
 
                 foreach (var oggFile in oggFiles)
@@ -165,7 +165,7 @@ namespace PorkChop.Library
                     new Process
                     {
                         Executable = Path.Combine(halofolder, "tool.exe"),
-                        Arguments  = "sounds DATA\\PORKCHOP ogg 1"
+                        Arguments  = "sounds DATA\\Porkchop ogg 1"
                     }.Start().WaitForExit();
                 });
             }
