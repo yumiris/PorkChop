@@ -40,9 +40,8 @@
             this.cbox2 = new System.Windows.Forms.RadioButton();
             this.sbox = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.TagName = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.timebox = new System.Windows.Forms.MaskedTextBox();
+            this.status = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -50,7 +49,7 @@
             // 
             // chop
             // 
-            this.chop.Location = new System.Drawing.Point(142, 134);
+            this.chop.Location = new System.Drawing.Point(142, 106);
             this.chop.Name = "chop";
             this.chop.Size = new System.Drawing.Size(100, 23);
             this.chop.TabIndex = 0;
@@ -101,7 +100,7 @@
             // 
             this.groupBox1.Controls.Add(this.kbox44);
             this.groupBox1.Controls.Add(this.kbox22);
-            this.groupBox1.Location = new System.Drawing.Point(12, 63);
+            this.groupBox1.Location = new System.Drawing.Point(12, 35);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(78, 65);
             this.groupBox1.TabIndex = 7;
@@ -112,7 +111,7 @@
             // 
             this.groupBox2.Controls.Add(this.cbox1);
             this.groupBox2.Controls.Add(this.cbox2);
-            this.groupBox2.Location = new System.Drawing.Point(96, 63);
+            this.groupBox2.Location = new System.Drawing.Point(96, 35);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(78, 65);
             this.groupBox2.TabIndex = 8;
@@ -158,31 +157,12 @@
             // 
             this.groupBox3.Controls.Add(this.timebox);
             this.groupBox3.Controls.Add(this.sbox);
-            this.groupBox3.Location = new System.Drawing.Point(180, 63);
+            this.groupBox3.Location = new System.Drawing.Point(180, 35);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(62, 65);
             this.groupBox3.TabIndex = 9;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = " Length ";
-            // 
-            // TagName
-            // 
-            this.TagName.Location = new System.Drawing.Point(87, 35);
-            this.TagName.Name = "TagName";
-            this.TagName.Size = new System.Drawing.Size(155, 20);
-            this.TagName.TabIndex = 11;
-            this.TagName.Text = "default";
-            this.TagName.TextChanged += new System.EventHandler(this.TagName_TextChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 38);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(69, 13);
-            this.label1.TabIndex = 12;
-            this.label1.Text = "Sound Name";
-            this.label1.Click += new System.EventHandler(this.Label1_Click);
             // 
             // timebox
             // 
@@ -193,13 +173,20 @@
             this.timebox.TabIndex = 13;
             this.timebox.Text = "000030";
             // 
+            // status
+            // 
+            this.status.AutoSize = true;
+            this.status.Location = new System.Drawing.Point(9, 130);
+            this.status.Name = "status";
+            this.status.Size = new System.Drawing.Size(0, 13);
+            this.status.TabIndex = 10;
+            // 
             // PorkChop
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(254, 168);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.TagName);
+            this.ClientSize = new System.Drawing.Size(254, 144);
+            this.Controls.Add(this.status);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -234,9 +221,8 @@
         private System.Windows.Forms.RadioButton cbox2;
         private System.Windows.Forms.CheckBox sbox;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.TextBox TagName;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.MaskedTextBox timebox;
+        private System.Windows.Forms.Label status;
     }
 }
 

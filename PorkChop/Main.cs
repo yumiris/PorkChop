@@ -124,9 +124,11 @@ namespace PorkChop
 
             foreach (var soundfile in files)
             {
+                
                 string name = Path.GetFileNameWithoutExtension(soundfile);
 
-                
+                name = name.Replace(' ', '_');
+                status.Text = "Currently Processing -" + name;
 
                 Codec.Encode(soundfile, name, soundsample, soundchannel, soundsplit, soundtime);
             }

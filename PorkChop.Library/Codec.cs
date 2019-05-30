@@ -276,6 +276,7 @@ namespace PorkChop.Library
             {
                 return System.Diagnostics.Process.Start(new ProcessStartInfo
                 {
+                    WindowStyle = ProcessWindowStyle.Hidden,
                     FileName  = Executable,
                     Arguments = Arguments
                 });
