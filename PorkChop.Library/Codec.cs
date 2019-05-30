@@ -40,7 +40,7 @@ namespace PorkChop.Library
         /// <param name="mp3">
         ///     MP3 file on the filesystem.
         /// </param>
-        public static void Encode(string mp3, string soundname, string samplerate, string channel, bool split, string stime)
+        public static void Encode(string mp3, string soundname, string samplerate, string channel, bool stype, bool split, string stime)
         {
 
             
@@ -234,6 +234,18 @@ namespace PorkChop.Library
 
                     bw.BaseStream.Seek(64, SeekOrigin.Begin);
                     bw.Write(2);
+                    short IDtype = 0;
+
+
+                    if (stype)
+                    {
+                        IDtype = 32;
+                    }
+                    else
+                    {
+                        IDtype = 4;
+                    }
+                    bw.Write(IDtype);
 
                     br.BaseStream.Seek(288, SeekOrigin.Begin);
                     permutation_count = br.ReadInt32();

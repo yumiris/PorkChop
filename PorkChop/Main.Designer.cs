@@ -42,18 +42,22 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.timebox = new System.Windows.Forms.MaskedTextBox();
             this.status = new System.Windows.Forms.Label();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.pbox = new System.Windows.Forms.RadioButton();
+            this.mbox = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // chop
             // 
-            this.chop.Location = new System.Drawing.Point(142, 106);
+            this.chop.Location = new System.Drawing.Point(254, 7);
             this.chop.Name = "chop";
-            this.chop.Size = new System.Drawing.Size(100, 23);
+            this.chop.Size = new System.Drawing.Size(76, 22);
             this.chop.TabIndex = 0;
-            this.chop.Text = "Convert Sounds";
+            this.chop.Text = "Batch";
             this.chop.UseVisualStyleBackColor = true;
             this.chop.Click += new System.EventHandler(this.Chop_Click);
             // 
@@ -176,16 +180,51 @@
             // status
             // 
             this.status.AutoSize = true;
-            this.status.Location = new System.Drawing.Point(9, 130);
+            this.status.Location = new System.Drawing.Point(15, 103);
             this.status.Name = "status";
-            this.status.Size = new System.Drawing.Size(0, 13);
+            this.status.Size = new System.Drawing.Size(58, 13);
             this.status.TabIndex = 10;
+            this.status.Text = "StatusText";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.pbox);
+            this.groupBox4.Controls.Add(this.mbox);
+            this.groupBox4.Location = new System.Drawing.Point(248, 35);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(82, 65);
+            this.groupBox4.TabIndex = 14;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = " Type ";
+            // 
+            // pbox
+            // 
+            this.pbox.AutoSize = true;
+            this.pbox.Location = new System.Drawing.Point(6, 17);
+            this.pbox.Name = "pbox";
+            this.pbox.Size = new System.Drawing.Size(59, 17);
+            this.pbox.TabIndex = 7;
+            this.pbox.Text = "Gunfire";
+            this.pbox.UseVisualStyleBackColor = true;
+            // 
+            // mbox
+            // 
+            this.mbox.AutoSize = true;
+            this.mbox.Checked = true;
+            this.mbox.Location = new System.Drawing.Point(6, 40);
+            this.mbox.Name = "mbox";
+            this.mbox.Size = new System.Drawing.Size(53, 17);
+            this.mbox.TabIndex = 8;
+            this.mbox.TabStop = true;
+            this.mbox.Text = "Music";
+            this.mbox.UseVisualStyleBackColor = true;
             // 
             // PorkChop
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(254, 144);
+            this.ClientSize = new System.Drawing.Size(339, 120);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.status);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -203,6 +242,8 @@
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -223,6 +264,9 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.MaskedTextBox timebox;
         private System.Windows.Forms.Label status;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.RadioButton pbox;
+        private System.Windows.Forms.RadioButton mbox;
     }
 }
 

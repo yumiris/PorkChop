@@ -79,7 +79,7 @@ namespace PorkChop
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+            status.Text = "";
         }
 
 
@@ -100,6 +100,7 @@ namespace PorkChop
 
             string soundsample = "22050";
             string soundchannel = "1";
+            bool soundtype = false;
             bool soundsplit = false;
             string soundtime = timebox.Text;
 
@@ -118,6 +119,12 @@ namespace PorkChop
                 soundsplit = true;
             };
 
+            if (mbox.Checked)
+            {
+                soundtype = true;
+            };
+
+
 
 
             var files = Directory.GetFiles(dir.Text, "*", SearchOption.AllDirectories);
@@ -130,8 +137,9 @@ namespace PorkChop
                 name = name.Replace(' ', '_');
                 status.Text = "Currently Processing -" + name;
 
-                Codec.Encode(soundfile, name, soundsample, soundchannel, soundsplit, soundtime);
+                Codec.Encode(soundfile, name, soundsample, soundchannel, soundtype, soundsplit, soundtime);
             }
+            status.Text = "Completed - " + files.Count().ToString() + " files processed.";
         }
 
         private void CheckBox1_CheckedChanged(object sender, EventArgs e)
@@ -155,5 +163,7 @@ namespace PorkChop
         {
 
         }
+
+        
     }
 }
