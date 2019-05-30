@@ -60,8 +60,7 @@ namespace PorkChop.Library
             var stype      = configuration.SoundType;  /* for compatibility with below code */
             var split      = configuration.Split;      /* for compatibility with below code */
             var stime      = configuration.SoundTime;  /* for compatibility with below code */
-
-            var temp = Guid.NewGuid(); /* generate wav with guid to avoid collisions */
+            var temp       = Guid.NewGuid();           /* random string to avoid collisions */
 
             WriteLine("Initiate encoding process");
             CheckUp(); /* checks the current env */
