@@ -40,13 +40,9 @@ namespace PorkChop.Library
         /// <param name="mp3">
         ///     MP3 file on the filesystem.
         /// </param>
-        public static void Encode(string mp3, string soundname, string samplerate, string channel, bool stype, bool split, string stime)
+        public static void Encode(string mp3,   string soundname, string samplerate, string channel, bool stype,
+            bool                         split, string stime)
         {
-
-            
-            
-
-
             WriteLine("Initiate encoding process");
             CheckUp(); /* checks the current env */
             Prepare(); /* create directories */
@@ -105,71 +101,50 @@ namespace PorkChop.Library
 
             void Execute()
             {
-
-                if (split)
-                {
-                    //Split Sound
-                    
-                    var processes = new List<Process>
-                             {
-                                new Process
-                                {
-                                    Executable = Path.Combine(Environment.CurrentDirectory, "convcodec.exe"),
-                                    Arguments  = $"\"{mp3}\" temp.wav /v /R"+samplerate+" /B16 /C"+channel+" /#"
-                                },
-                                new Process
-                                {
-                                    Executable = Path.Combine(Environment.CurrentDirectory, "conv.exe"),
-                                    Arguments  = "-of "+samplerate+" -oc"+channel+" -ob16 -idel temp.wav temp\\temp.ogg"
-                                },
-                                new Process
-                                {
-                                    Executable = Path.Combine(Environment.CurrentDirectory, "premu.exe"),
-                                    Arguments  = "-o@n -d temp -t "+stime+" temp\\temp.ogg"
-                                },
-                                new Process
-                                {
-                                    Executable = Path.Combine(Environment.CurrentDirectory, "conv.exe"),
-                                    Arguments  = "-llw CONVLIST.LST -of "+samplerate+" -oc"+channel+" -ob16  -idel"
-                                }
-                             };
-
-                    foreach (var process in processes)
+                var processes = split
+                    ? new List<Process> /* split up sound */
                     {
-                        WriteLine("EXECUTE: Initiate - " + process.Executable);
-                        process.Start().WaitForExit();
-                        WriteLine("EXECUTE: Finished - " + process.Executable);
+                        new Process
+                        {
+                            Executable = Path.Combine(Environment.CurrentDirectory, "convcodec.exe"),
+                            Arguments  = $"\"{mp3}\" temp.wav /v /R" + samplerate + " /B16 /C" + channel + " /#"
+                        },
+                        new Process
+                        {
+                            Executable = Path.Combine(Environment.CurrentDirectory, "conv.exe"),
+                            Arguments  = "-of " + samplerate + " -oc" + channel + " -ob16 -idel temp.wav temp\\temp.ogg"
+                        },
+                        new Process
+                        {
+                            Executable = Path.Combine(Environment.CurrentDirectory, "premu.exe"),
+                            Arguments  = "-o@n -d temp -t " + stime + " temp\\temp.ogg"
+                        },
+                        new Process
+                        {
+                            Executable = Path.Combine(Environment.CurrentDirectory, "conv.exe"),
+                            Arguments  = "-llw CONVLIST.LST -of " + samplerate + " -oc" + channel + " -ob16  -idel"
+                        }
                     }
-                }
-                else
-                {
-                    //Straight Sound
-                    
-                    var processes = new List<Process>
-                             {
-                                new Process
-                                {
-                                    Executable = Path.Combine(Environment.CurrentDirectory, "convcodec.exe"),
-                                    Arguments  = $"\"{mp3}\" temp.wav /v /R"+samplerate+" /B16 /C"+channel+" /#"
-                                },
-                                new Process
-                                {
-                                    Executable = Path.Combine(Environment.CurrentDirectory, "conv.exe"),
-                                    Arguments  = "-of "+samplerate+" -oc"+channel+" -ob16 -idel temp.wav temp\\temp.wav"
-                                },
-                                
-                             };
-
-                    foreach (var process in processes)
+                    : new List<Process> /* straight sound */
                     {
-                        WriteLine("EXECUTE: Initiate - " + process.Executable);
-                        process.Start().WaitForExit();
-                        WriteLine("EXECUTE: Finished - " + process.Executable);
-                    }
+                        new Process
+                        {
+                            Executable = Path.Combine(Environment.CurrentDirectory, "convcodec.exe"),
+                            Arguments  = $"\"{mp3}\" temp.wav /v /R" + samplerate + " /B16 /C" + channel + " /#"
+                        },
+                        new Process
+                        {
+                            Executable = Path.Combine(Environment.CurrentDirectory, "conv.exe"),
+                            Arguments  = "-of " + samplerate + " -oc" + channel + " -ob16 -idel temp.wav temp\\temp.wav"
+                        }
+                    };
 
-
+                foreach (var process in processes)
+                {
+                    WriteLine("EXECUTE: Initiate - " + process.Executable);
+                    process.Start().WaitForExit();
+                    WriteLine("EXECUTE: Finished - " + process.Executable);
                 }
-                        
             }
 
             /**
@@ -179,7 +154,7 @@ namespace PorkChop.Library
             void CleanUp()
             {
                 var tempDir  = Path.Combine(Environment.CurrentDirectory, "temp");
-                var dataDir  = Path.Combine(Environment.CurrentDirectory, "DATA" , soundname);
+                var dataDir  = Path.Combine(Environment.CurrentDirectory, "DATA", soundname);
                 var wavFiles = new DirectoryInfo(tempDir).GetFiles("*.wav", SearchOption.TopDirectoryOnly);
                 var oggFiles = new DirectoryInfo(tempDir).GetFiles("*.ogg", SearchOption.TopDirectoryOnly);
 
@@ -207,16 +182,14 @@ namespace PorkChop.Library
 
             void Compile()
             {
-
-                    new Process
-                    {
-                        Executable = Path.Combine(Environment.CurrentDirectory,"tool.exe"),
-                        Arguments  = "sounds "+soundname+" ogg 1"
-                    }.Start().WaitForExit();
+                new Process
+                {
+                    Executable = Path.Combine(Environment.CurrentDirectory, "tool.exe"),
+                    Arguments  = "sounds " + soundname + " ogg 1"
+                }.Start().WaitForExit();
 
                 Directory.Delete(Path.Combine(Environment.CurrentDirectory, "DATA"), true);
             }
-
 
             void Chop()
             {
@@ -234,18 +207,8 @@ namespace PorkChop.Library
 
                     bw.BaseStream.Seek(64, SeekOrigin.Begin);
                     bw.Write(2);
-                    short IDtype = 0;
 
-
-                    if (stype)
-                    {
-                        IDtype = 32;
-                    }
-                    else
-                    {
-                        IDtype = 4;
-                    }
-                    bw.Write(IDtype);
+                    bw.Write(stype ? (short) 32 : (short) 4); /* IDtype */
 
                     br.BaseStream.Seek(288, SeekOrigin.Begin);
                     permutation_count = br.ReadInt32();
@@ -255,9 +218,9 @@ namespace PorkChop.Library
                     for (var i = 0; i < permutation_count; i++)
                     {
                         if (i != permutation_count - 1)
-                            bw.Write((short)(i + 1));
+                            bw.Write((short) (i + 1));
                         else
-                            bw.Write((short)-1);
+                            bw.Write((short) -1);
 
                         bw.BaseStream.Seek(122, SeekOrigin.Current);
                     }
@@ -266,7 +229,6 @@ namespace PorkChop.Library
                     fs.Position = 0;
                     ms.CopyTo(fs);
                 }
-
             }
         }
 
@@ -289,8 +251,8 @@ namespace PorkChop.Library
                 return System.Diagnostics.Process.Start(new ProcessStartInfo
                 {
                     WindowStyle = ProcessWindowStyle.Hidden,
-                    FileName  = Executable,
-                    Arguments = Arguments
+                    FileName    = Executable,
+                    Arguments   = Arguments
                 });
             }
         }
