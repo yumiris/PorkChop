@@ -77,7 +77,7 @@ namespace PorkChop
             if (fbd.ShowDialog() == DialogResult.OK) dir.Text = fbd.SelectedPath;
         }
 
-        private void Chop_Click(object sender, EventArgs e)
+        private async void Chop_Click(object sender, EventArgs e)
         {
             var soundsample  = "22050";
             var soundchannel = "1";
@@ -101,19 +101,21 @@ namespace PorkChop
 
             status.Text = "Currently Processing...";
 
-            Parallel.ForEach(files, soundfile =>
-            {
-                Codec.Encode(new Codec.Configuration
+            await Task.Run(() =>
+                Parallel.ForEach(files, soundfile =>
                 {
-                    Mp3File    = soundfile,
-                    SoundName  = Path.GetFileNameWithoutExtension(soundfile)?.Replace(' ', '_'),
-                    SampleRate = soundsample,
-                    Channel    = soundchannel,
-                    SoundType  = soundtype,
-                    Split      = soundsplit,
-                    SoundTime  = soundtime
-                });
-            });
+                    Codec.Encode(new Codec.Configuration
+                    {
+                        Mp3File    = soundfile,
+                        SoundName  = Path.GetFileNameWithoutExtension(soundfile)?.Replace(' ', '_'),
+                        SampleRate = soundsample,
+                        Channel    = soundchannel,
+                        SoundType  = soundtype,
+                        Split      = soundsplit,
+                        SoundTime  = soundtime
+                    });
+                })
+            );
 
             status.Text = "Completed - " + files.Count() + " files processed.";
         }
