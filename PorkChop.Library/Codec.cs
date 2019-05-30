@@ -61,6 +61,8 @@ namespace PorkChop.Library
             var split      = configuration.Split;      /* for compatibility with below code */
             var stime      = configuration.SoundTime;  /* for compatibility with below code */
 
+            var tempWav = Guid.NewGuid() + ".wav"; /* generate wav with guid to avoid collisions */
+
             WriteLine("Initiate encoding process");
             CheckUp(); /* checks the current env */
             Prepare(); /* create directories */
@@ -124,22 +126,22 @@ namespace PorkChop.Library
                         new Process
                         {
                             Executable = Path.Combine(Environment.CurrentDirectory, "convcodec.exe"),
-                            Arguments  = $"\"{mp3}\" temp.wav /v /R" + samplerate + " /B16 /C" + channel + " /#"
+                            Arguments  = $"\"{mp3}\" {tempWav} /v /R{samplerate} /B16 /C{channel} /#"
                         },
                         new Process
                         {
                             Executable = Path.Combine(Environment.CurrentDirectory, "conv.exe"),
-                            Arguments  = "-of " + samplerate + " -oc" + channel + " -ob16 -idel temp.wav temp\\temp.ogg"
+                            Arguments  = $"-of {samplerate} -oc{channel} -ob16 -idel {tempWav} temp\\temp.ogg"
                         },
                         new Process
                         {
                             Executable = Path.Combine(Environment.CurrentDirectory, "premu.exe"),
-                            Arguments  = "-o@n -d temp -t " + stime + " temp\\temp.ogg"
+                            Arguments  = $"-o@n -d temp -t {stime} temp\\temp.ogg"
                         },
                         new Process
                         {
                             Executable = Path.Combine(Environment.CurrentDirectory, "conv.exe"),
-                            Arguments  = "-llw CONVLIST.LST -of " + samplerate + " -oc" + channel + " -ob16  -idel"
+                            Arguments  = $"-llw CONVLIST.LST -of {samplerate} -oc{channel} -ob16  -idel"
                         }
                     }
                     : new List<Process> /* straight sound */
@@ -147,12 +149,12 @@ namespace PorkChop.Library
                         new Process
                         {
                             Executable = Path.Combine(Environment.CurrentDirectory, "convcodec.exe"),
-                            Arguments  = $"\"{mp3}\" temp.wav /v /R" + samplerate + " /B16 /C" + channel + " /#"
+                            Arguments  = $"\"{mp3}\" {tempWav} /v /R{samplerate} /B16 /C{channel} /#"
                         },
                         new Process
                         {
                             Executable = Path.Combine(Environment.CurrentDirectory, "conv.exe"),
-                            Arguments  = "-of " + samplerate + " -oc" + channel + " -ob16 -idel temp.wav temp\\temp.wav"
+                            Arguments  = $"-of {samplerate} -oc{channel} -ob16 -idel {tempWav} temp\\{tempWav}"
                         }
                     };
 
