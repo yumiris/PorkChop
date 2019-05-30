@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Be.IO;
 using PorkChop.Library;
@@ -98,24 +99,21 @@ namespace PorkChop
 
             var files = Directory.GetFiles(dir.Text, "*", SearchOption.AllDirectories);
 
-            foreach (var soundfile in files)
+            status.Text = "Currently Processing...";
+
+            Parallel.ForEach(files, soundfile =>
             {
-                var name = Path.GetFileNameWithoutExtension(soundfile);
-
-                name        = name.Replace(' ', '_');
-                status.Text = "Currently Processing - " + name;
-
                 Codec.Encode(new Codec.Configuration
                 {
                     Mp3File    = soundfile,
-                    SoundName  = name,
+                    SoundName  = Path.GetFileNameWithoutExtension(soundfile)?.Replace(' ', '_'),
                     SampleRate = soundsample,
                     Channel    = soundchannel,
                     SoundType  = soundtype,
                     Split      = soundsplit,
                     SoundTime  = soundtime
                 });
-            }
+            });
 
             status.Text = "Completed - " + files.Count() + " files processed.";
         }
