@@ -41,8 +41,8 @@
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.samplebox = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.HaloPath = new System.Windows.Forms.Button();
-            this.halobox = new System.Windows.Forms.TextBox();
+            this.TagName = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -50,7 +50,7 @@
             // 
             // chop
             // 
-            this.chop.Location = new System.Drawing.Point(142, 115);
+            this.chop.Location = new System.Drawing.Point(142, 134);
             this.chop.Name = "chop";
             this.chop.Size = new System.Drawing.Size(100, 23);
             this.chop.TabIndex = 0;
@@ -101,7 +101,7 @@
             // 
             this.groupBox1.Controls.Add(this.radioButton1);
             this.groupBox1.Controls.Add(this.radioButton2);
-            this.groupBox1.Location = new System.Drawing.Point(12, 37);
+            this.groupBox1.Location = new System.Drawing.Point(12, 63);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(78, 65);
             this.groupBox1.TabIndex = 7;
@@ -112,7 +112,7 @@
             // 
             this.groupBox2.Controls.Add(this.radioButton3);
             this.groupBox2.Controls.Add(this.radioButton4);
-            this.groupBox2.Location = new System.Drawing.Point(96, 37);
+            this.groupBox2.Location = new System.Drawing.Point(96, 63);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(78, 65);
             this.groupBox2.TabIndex = 8;
@@ -167,37 +167,39 @@
             // 
             this.groupBox3.Controls.Add(this.samplebox);
             this.groupBox3.Controls.Add(this.checkBox1);
-            this.groupBox3.Location = new System.Drawing.Point(180, 37);
+            this.groupBox3.Location = new System.Drawing.Point(180, 63);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(62, 65);
             this.groupBox3.TabIndex = 9;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = " Length ";
             // 
-            // HaloPath
+            // TagName
             // 
-            this.HaloPath.Location = new System.Drawing.Point(12, 115);
-            this.HaloPath.Name = "HaloPath";
-            this.HaloPath.Size = new System.Drawing.Size(100, 23);
-            this.HaloPath.TabIndex = 10;
-            this.HaloPath.Text = "Set Halo Path";
-            this.HaloPath.UseVisualStyleBackColor = true;
-            this.HaloPath.Click += new System.EventHandler(this.HaloPath_Click);
+            this.TagName.Location = new System.Drawing.Point(87, 35);
+            this.TagName.Name = "TagName";
+            this.TagName.Size = new System.Drawing.Size(155, 20);
+            this.TagName.TabIndex = 11;
+            this.TagName.Text = "default";
+            this.TagName.TextChanged += new System.EventHandler(this.TagName_TextChanged);
             // 
-            // halobox
+            // label1
             // 
-            this.halobox.Location = new System.Drawing.Point(12, 144);
-            this.halobox.Name = "halobox";
-            this.halobox.Size = new System.Drawing.Size(230, 20);
-            this.halobox.TabIndex = 11;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 38);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(69, 13);
+            this.label1.TabIndex = 12;
+            this.label1.Text = "Sound Name";
+            this.label1.Click += new System.EventHandler(this.Label1_Click);
             // 
             // PorkChop
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(254, 168);
-            this.Controls.Add(this.halobox);
-            this.Controls.Add(this.HaloPath);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.TagName);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -233,8 +235,8 @@
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.TextBox samplebox;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Button HaloPath;
-        private System.Windows.Forms.TextBox halobox;
+        private System.Windows.Forms.TextBox TagName;
+        private System.Windows.Forms.Label label1;
     }
 }
 

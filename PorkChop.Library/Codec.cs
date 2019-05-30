@@ -38,7 +38,7 @@ namespace PorkChop.Library
         /// <param name="mp3">
         ///     MP3 file on the filesystem.
         /// </param>
-        public static void Encode(string mp3, string halofolder)
+        public static void Encode(string mp3, string soundname)
         {
             WriteLine("Initiate encoding process");
             CheckUp(); /* checks the current env */
@@ -76,7 +76,7 @@ namespace PorkChop.Library
             {
                 var directories = new List<string>
                 {
-                    Path.Combine(halofolder, "data", "PorkChop"),
+                    Path.Combine(Environment.CurrentDirectory, "data", "PorkChop"),
                     Path.Combine(Environment.CurrentDirectory, "temp")
                 };
 
@@ -132,7 +132,7 @@ namespace PorkChop.Library
             void CleanUp()
             {
                 var tempDir  = Path.Combine(Environment.CurrentDirectory, "temp");
-                var dataDir  = Path.Combine(halofolder, "DATA" , "PorkChop");
+                var dataDir  = Path.Combine(Environment.CurrentDirectory, "DATA" , "PorkChop");
                 var wavFiles = new DirectoryInfo(tempDir).GetFiles("*.wav", SearchOption.TopDirectoryOnly);
                 var oggFiles = new DirectoryInfo(tempDir).GetFiles("*.ogg", SearchOption.TopDirectoryOnly);
 
@@ -164,10 +164,16 @@ namespace PorkChop.Library
                 {
                     new Process
                     {
-                        Executable = Path.Combine(halofolder, "tool.exe"),
-                        Arguments  = "sounds DATA\\Porkchop ogg 1"
+                        Executable = Path.Combine(Environment.CurrentDirectory,"tool.exe"),
+                        Arguments  = "sounds "+soundname+" ogg 1"
                     }.Start().WaitForExit();
+
+                    
+                    
+
+
                 });
+                Directory.Delete(Path.Combine(Environment.CurrentDirectory, "DATA"), true);
             }
         }
 

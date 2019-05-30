@@ -45,7 +45,7 @@ namespace PorkChop.CLI
 
             try
             {
-                Codec.Encode(mp3, dir);
+                Codec.Encode(mp3 ,dir);
             }
             catch (Exception e)
             {
