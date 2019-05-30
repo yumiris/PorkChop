@@ -69,7 +69,7 @@ namespace PorkChop.Library
             Compile(); /* executes tool.exe */
 
             if (split)
-                Chop(); /* sets up the tag for split parts */
+                Split(); /* sets up the tag for split parts */
 
             WriteLine("Finished encoding process");
 
@@ -208,7 +208,11 @@ namespace PorkChop.Library
                 Directory.Delete(Path.Combine(Environment.CurrentDirectory, "DATA"), true);
             }
 
-            void Chop()
+            /**
+             * Splits up the audio data.
+             */
+
+            void Split()
             {
                 var filename = Path.Combine(Environment.CurrentDirectory, "TAGS", soundname + ".sound");
 

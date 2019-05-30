@@ -7,19 +7,10 @@ using PorkChop.Library;
 
 namespace PorkChop
 {
-
-
-
-    
-    
     public partial class PorkChop : Form
     {
-
-
-        
-
         string settings_path = Path.Combine(Environment.GetFolderPath(
-    Environment.SpecialFolder.ApplicationData), "PorkChop.txt");
+            Environment.SpecialFolder.ApplicationData), "PorkChop.txt");
 
 
         public PorkChop()
@@ -33,11 +24,6 @@ namespace PorkChop
 
             foreach (var soundtag in files)
             {
-
-
-
-
-
                 var filename = Path.GetFullPath(soundtag);
 
                 int permutation_count;
@@ -83,96 +69,76 @@ namespace PorkChop
         }
 
 
-
-
-
         private void brwsbtn(object sender, EventArgs e)
         {
-            var fbd = new FolderBrowserDialog();
-            fbd.ShowNewFolderButton = true;
+            var fbd = new FolderBrowserDialog {ShowNewFolderButton = true};
 
             if (fbd.ShowDialog() == DialogResult.OK) dir.Text = fbd.SelectedPath;
         }
 
         private void Chop_Click(object sender, EventArgs e)
         {
-
-
-            string soundsample = "22050";
-            string soundchannel = "1";
-            bool soundtype = false;
-            bool soundsplit = false;
-            string soundtime = timebox.Text;
+            var soundsample  = "22050";
+            var soundchannel = "1";
+            var soundtype    = false;
+            var soundsplit   = false;
+            var soundtime    = timebox.Text;
 
             if (kbox44.Checked)
-            {
-               soundsample = "44100";
-            };
+                soundsample = "44100";
 
             if (cbox2.Checked)
-            {
-               soundchannel = "2";
-            };
+                soundchannel = "2";
 
             if (sbox.Checked)
-            {
                 soundsplit = true;
-            };
 
             if (mbox.Checked)
-            {
                 soundtype = true;
-            };
-
-
-
 
             var files = Directory.GetFiles(dir.Text, "*", SearchOption.AllDirectories);
 
             foreach (var soundfile in files)
             {
-                
-                string name = Path.GetFileNameWithoutExtension(soundfile);
+                var name = Path.GetFileNameWithoutExtension(soundfile);
 
-                name = name.Replace(' ', '_');
-                status.Text = "Currently Processing -" + name;
+                name        = name.Replace(' ', '_');
+                status.Text = "Currently Processing - " + name;
 
                 Codec.Encode(new Codec.Configuration
                 {
-                    Mp3File = soundfile,
-                    SoundName = name,
+                    Mp3File    = soundfile,
+                    SoundName  = name,
                     SampleRate = soundsample,
-                    Channel = soundchannel,
-                    SoundType = soundtype,
-                    Split = soundsplit,
-                    SoundTime = soundtime
+                    Channel    = soundchannel,
+                    SoundType  = soundtype,
+                    Split      = soundsplit,
+                    SoundTime  = soundtime
                 });
             }
-            status.Text = "Completed - " + files.Count().ToString() + " files processed.";
+
+            status.Text = "Completed - " + files.Count() + " files processed.";
         }
 
         private void CheckBox1_CheckedChanged(object sender, EventArgs e)
         {
-
+            //
         }
 
         private void TextBox1_TextChanged(object sender, EventArgs e)
         {
-
+            //
         }
 
-      
 
         private void Label1_Click(object sender, EventArgs e)
         {
-
+            //
         }
 
         private void TagName_TextChanged(object sender, EventArgs e)
         {
-
+            //
         }
-
-        
     }
 }
