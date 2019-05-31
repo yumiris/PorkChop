@@ -19,19 +19,25 @@
  */
 
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
-using System.Text;
-using System.Windows.Forms;
 using Be.IO;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace PorkChop
 {
     public partial class Looper : Form
     {
-        private readonly string settings_path =
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PorkChop.txt");
+        string settings_path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            "PorkChop.txt");
 
-        private string tagsdir = "";
+        string tagsdir = "";
 
         public Looper()
         {
@@ -49,11 +55,11 @@ namespace PorkChop
                 BatchLoop(slFile.FullName, namelength);
             }
 
-            MessageBox.Show("Processed - " + (slFiles.GetUpperBound(0) + 1) + " files");
+            MessageBox.Show("Processed - " + (slFiles.GetUpperBound(0) + 1).ToString() + " files");
         }
 
-
         private void BatchLoop(string filename, int nlength)
+
         {
             var demotag = Path.Combine(Environment.CurrentDirectory, "demo.sound_looping");
 
@@ -65,20 +71,19 @@ namespace PorkChop
             {
                 fs.CopyTo(ms);
                 ms.Position = 0;
-
                 var tagpath = filename.Substring(tagsdir.Length + 1);
                 tagpath = tagpath.Substring(0, tagpath.Length - 6);
-
                 MessageBox.Show(tagpath);
+                var namelength = tagpath.Length;
+                Byte  nan        = 0;
 
-                var  namelength = tagpath.Length;
-                byte nan        = 0;
 
                 bw.BaseStream.Seek(220, SeekOrigin.Begin);
                 bw.Write(namelength);
 
+
                 bw.BaseStream.Seek(308, SeekOrigin.Begin);
-                bw.Write(Encoding.ASCII.GetBytes(tagpath));
+                bw.Write(tagpath);
                 bw.Write(nan);
 
                 ms.Position = 0;
@@ -87,13 +92,11 @@ namespace PorkChop
             }
         }
 
-
         private void Button1_Click(object sender, EventArgs e)
         {
             var fbd = new FolderBrowserDialog {ShowNewFolderButton = true};
 
-            if (fbd.ShowDialog() == DialogResult.OK)
-                dir.Text = fbd.SelectedPath;
+            if (fbd.ShowDialog() == DialogResult.OK) dir.Text = fbd.SelectedPath;
         }
 
         private void Looper_Load(object sender, EventArgs e)
@@ -121,13 +124,12 @@ namespace PorkChop
             var fbd = new FolderBrowserDialog();
             fbd.ShowNewFolderButton = false;
 
-            if (fbd.ShowDialog() == DialogResult.OK)
-            {
-                tagsdir = fbd.SelectedPath;
+            if (fbd.ShowDialog() != DialogResult.OK) return;
+            
+            tagsdir = fbd.SelectedPath;
 
-                MessageBox.Show(tagsdir);
-                File.WriteAllText(settings_path, tagsdir);
-            }
+            MessageBox.Show(tagsdir);
+            File.WriteAllText(settings_path, tagsdir);
         }
 
         private void Button3_Click(object sender, EventArgs e)
