@@ -45,15 +45,23 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.pbox = new System.Windows.Forms.RadioButton();
             this.mbox = new System.Windows.Forms.RadioButton();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.soundLooperToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutPorkchopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutPorkChopToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // chop
             // 
-            this.chop.Location = new System.Drawing.Point(254, 7);
+            this.chop.Location = new System.Drawing.Point(254, 26);
             this.chop.Name = "chop";
             this.chop.Size = new System.Drawing.Size(76, 22);
             this.chop.TabIndex = 0;
@@ -63,14 +71,14 @@
             // 
             // dir
             // 
-            this.dir.Location = new System.Drawing.Point(52, 9);
+            this.dir.Location = new System.Drawing.Point(52, 28);
             this.dir.Name = "dir";
             this.dir.Size = new System.Drawing.Size(190, 20);
             this.dir.TabIndex = 2;
             // 
             // brs
             // 
-            this.brs.Location = new System.Drawing.Point(12, 8);
+            this.brs.Location = new System.Drawing.Point(12, 27);
             this.brs.Name = "brs";
             this.brs.Size = new System.Drawing.Size(34, 22);
             this.brs.TabIndex = 3;
@@ -104,7 +112,7 @@
             // 
             this.groupBox1.Controls.Add(this.kbox44);
             this.groupBox1.Controls.Add(this.kbox22);
-            this.groupBox1.Location = new System.Drawing.Point(12, 35);
+            this.groupBox1.Location = new System.Drawing.Point(12, 54);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(78, 65);
             this.groupBox1.TabIndex = 7;
@@ -115,7 +123,7 @@
             // 
             this.groupBox2.Controls.Add(this.cbox1);
             this.groupBox2.Controls.Add(this.cbox2);
-            this.groupBox2.Location = new System.Drawing.Point(96, 35);
+            this.groupBox2.Location = new System.Drawing.Point(96, 54);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(78, 65);
             this.groupBox2.TabIndex = 8;
@@ -161,7 +169,7 @@
             // 
             this.groupBox3.Controls.Add(this.timebox);
             this.groupBox3.Controls.Add(this.sbox);
-            this.groupBox3.Location = new System.Drawing.Point(180, 35);
+            this.groupBox3.Location = new System.Drawing.Point(180, 54);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(62, 65);
             this.groupBox3.TabIndex = 9;
@@ -180,7 +188,7 @@
             // status
             // 
             this.status.AutoSize = true;
-            this.status.Location = new System.Drawing.Point(15, 103);
+            this.status.Location = new System.Drawing.Point(15, 122);
             this.status.Name = "status";
             this.status.Size = new System.Drawing.Size(58, 13);
             this.status.TabIndex = 10;
@@ -190,7 +198,7 @@
             // 
             this.groupBox4.Controls.Add(this.pbox);
             this.groupBox4.Controls.Add(this.mbox);
-            this.groupBox4.Location = new System.Drawing.Point(248, 35);
+            this.groupBox4.Location = new System.Drawing.Point(248, 54);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(82, 65);
             this.groupBox4.TabIndex = 14;
@@ -219,11 +227,68 @@
             this.mbox.Text = "Music";
             this.mbox.UseVisualStyleBackColor = true;
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.toolsToolStripMenuItem,
+            this.aboutPorkchopToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(339, 24);
+            this.menuStrip1.TabIndex = 15;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exitToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
+            // 
+            // toolsToolStripMenuItem
+            // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.soundLooperToolStripMenuItem});
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // soundLooperToolStripMenuItem
+            // 
+            this.soundLooperToolStripMenuItem.Name = "soundLooperToolStripMenuItem";
+            this.soundLooperToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.soundLooperToolStripMenuItem.Text = "Sound Looper";
+            this.soundLooperToolStripMenuItem.Click += new System.EventHandler(this.SoundLooperToolStripMenuItem_Click);
+            // 
+            // aboutPorkchopToolStripMenuItem
+            // 
+            this.aboutPorkchopToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutPorkChopToolStripMenuItem1});
+            this.aboutPorkchopToolStripMenuItem.Name = "aboutPorkchopToolStripMenuItem";
+            this.aboutPorkchopToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.aboutPorkchopToolStripMenuItem.Text = "Help";
+            // 
+            // aboutPorkChopToolStripMenuItem1
+            // 
+            this.aboutPorkChopToolStripMenuItem1.Name = "aboutPorkChopToolStripMenuItem1";
+            this.aboutPorkChopToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.aboutPorkChopToolStripMenuItem1.Text = "About PorkChop";
+            this.aboutPorkChopToolStripMenuItem1.Click += new System.EventHandler(this.AboutPorkChopToolStripMenuItem1_Click);
+            // 
             // PorkChop
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(339, 120);
+            this.ClientSize = new System.Drawing.Size(339, 136);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.status);
             this.Controls.Add(this.groupBox3);
@@ -232,7 +297,9 @@
             this.Controls.Add(this.brs);
             this.Controls.Add(this.dir);
             this.Controls.Add(this.chop);
+            this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "PorkChop";
             this.Text = "PorkChop";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -244,6 +311,8 @@
             this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -267,6 +336,13 @@
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.RadioButton pbox;
         private System.Windows.Forms.RadioButton mbox;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem soundLooperToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutPorkchopToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutPorkChopToolStripMenuItem1;
     }
 }
 

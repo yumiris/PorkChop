@@ -153,5 +153,22 @@ namespace PorkChop
         {
             //
         }
+
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void SoundLooperToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form f2 = new Looper();
+            f2.Show();
+        }
+
+        private void AboutPorkChopToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Form f2 = new About();
+            f2.Show();
+        }
     }
 }
