@@ -80,7 +80,7 @@ namespace PorkChop
 
 
                 bw.BaseStream.Seek(308, SeekOrigin.Begin);
-                bw.Write(tagpath);
+                bw.Write(Encoding.ASCII.GetBytes(tagpath));
                 bw.Write(nan);
 
                 ms.Position = 0;
