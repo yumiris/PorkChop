@@ -68,10 +68,7 @@ namespace PorkChop.Library
             Execute(); /* encode the mp3 */
 //            CleanUp(); /* clean up files */
             Compile(); /* executes tool.exe */
-            
-
-            if (split)
-                Split(); /* sets up the tag for split parts */
+            TagEdit(); /* sets up the tag for split parts */
 
             WriteLine("Finished encoding process");
 
@@ -160,7 +157,7 @@ namespace PorkChop.Library
                         new Process
                         {
                             Executable = Path.Combine(Environment.CurrentDirectory, "conv.exe"),
-                            Arguments  = $"-of {samplerate} -oc{channel} -ob16 -idel {temp}.wav temp\\{temp}.wav"
+                            Arguments  = $"-of {samplerate} -oc{channel} -ob16 -idel {temp}.wav temp\\{tempfolder}\\{temp}.wav"
                         }
                     };
 
@@ -240,7 +237,7 @@ namespace PorkChop.Library
              * Splits up the audio data.
              */
 
-            void Split()
+            void TagEdit()
             {
                 var filename = Path.Combine(Environment.CurrentDirectory, "TAGS", soundname + ".sound");
 
@@ -254,24 +251,30 @@ namespace PorkChop.Library
                     fs.CopyTo(ms);
                     ms.Position = 0;
 
-                    bw.BaseStream.Seek(64, SeekOrigin.Begin);
-                    bw.Write(2);
+                    bw.BaseStream.Seek(68, SeekOrigin.Begin);
+                    bw.Write(stype ? (short)32 : (short)4); /* IDtype */
 
-                    bw.Write(stype ? (short) 32 : (short) 4); /* IDtype */
-
-                    br.BaseStream.Seek(288, SeekOrigin.Begin);
-                    permutation_count = br.ReadInt32();
-
-                    bw.BaseStream.Seek(342, SeekOrigin.Begin);
-
-                    for (var i = 0; i < permutation_count; i++)
+                    if (split)
                     {
-                        if (i != permutation_count - 1)
-                            bw.Write((short) (i + 1));
-                        else
-                            bw.Write((short) -1);
+                        bw.BaseStream.Seek(64, SeekOrigin.Begin);
+                        bw.Write(2);
 
-                        bw.BaseStream.Seek(122, SeekOrigin.Current);
+
+
+                        br.BaseStream.Seek(288, SeekOrigin.Begin);
+                        permutation_count = br.ReadInt32();
+
+                        bw.BaseStream.Seek(342, SeekOrigin.Begin);
+
+                        for (var i = 0; i < permutation_count; i++)
+                        {
+                            if (i != permutation_count - 1)
+                                bw.Write((short)(i + 1));
+                            else
+                                bw.Write((short)-1);
+
+                            bw.BaseStream.Seek(122, SeekOrigin.Current);
+                        }
                     }
 
                     ms.Position = 0;
