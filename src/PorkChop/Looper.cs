@@ -1,37 +1,29 @@
-﻿/**
- * Copyright (c) 2019 DeadHamster35
- * 
- * This software is provided 'as-is', without any express or implied
- * warranty. In no event will the authors be held liable for any damages
- * arising from the use of this software.
- * 
- * Permission is granted to anyone to use this software for any purpose,
- * including commercial applications, and to alter it and redistribute it
- * freely, subject to the following restrictions:
- * 
- * 1. The origin of this software must not be misrepresented; you must not
- *    claim that you wrote the original software. If you use this software
- *    in a product, an acknowledgment in the product documentation would be
- *    appreciated but is not required.
- * 2. Altered source versions must be plainly marked as such, and must not be
- *    misrepresented as being the original software.
- * 3. This notice may not be removed or altered from any source distribution.
- */
-
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
-using System.Text;
-using System.Windows.Forms;
 using Be.IO;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace PorkChop
 {
+
+
+
+    
+
+
+
     public partial class Looper : Form
     {
-        private readonly string settings_path =
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PorkChop.txt");
 
-        private string tagsdir = "";
+        string settings_path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PorkChop.txt");
+        string tagsdir = "";
 
         public Looper()
         {
@@ -40,60 +32,75 @@ namespace PorkChop
 
         private void Button2_Click(object sender, EventArgs e)
         {
+
             var slFiles = new DirectoryInfo(dir.Text).GetFiles("*.sound", SearchOption.TopDirectoryOnly);
 
             foreach (var slFile in slFiles)
             {
-                var namelength = slFile.FullName.Length;
 
+                int namelength = slFile.FullName.Length;
+                
                 BatchLoop(slFile.FullName, namelength);
+
+
+
             }
 
-            MessageBox.Show("Processed - " + (slFiles.GetUpperBound(0) + 1) + " files");
+            MessageBox.Show("Processed - "+(slFiles.GetUpperBound(0)+1).ToString() + " files");
+
         }
 
 
-        private void BatchLoop(string filename, int nlength)
+
+        private void BatchLoop (string filename, int nlength)
+
         {
-            var demotag = Path.Combine(Environment.CurrentDirectory, "demo.sound_looping");
+            string demotag = Path.Combine(Environment.CurrentDirectory, "demo.sound_looping");
+
 
             using (var fs = new FileStream(demotag, FileMode.OpenOrCreate, FileAccess.ReadWrite))
-            using (var ds = new FileStream(filename + "_looping", FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            using (var ds = new FileStream(filename+"_looping", FileMode.OpenOrCreate, FileAccess.ReadWrite))
             using (var ms = new MemoryStream())
             using (var bw = new BeBinaryWriter(ms))
             using (var br = new BeBinaryReader(ms))
             {
                 fs.CopyTo(ms);
                 ms.Position = 0;
-
-                var tagpath = filename.Substring(tagsdir.Length + 1);
-                tagpath = tagpath.Substring(0, tagpath.Length - 6);
-
+                string tagpath = filename.Substring(tagsdir.Length + 1);
+                tagpath = tagpath.Substring(0 , tagpath.Length - 6);
                 MessageBox.Show(tagpath);
+                Int32 namelength = tagpath.Length;
+                Byte nan = 0;
 
-                var  namelength = tagpath.Length;
-                byte nan        = 0;
+
 
                 bw.BaseStream.Seek(220, SeekOrigin.Begin);
                 bw.Write(namelength);
 
+
+
                 bw.BaseStream.Seek(308, SeekOrigin.Begin);
-                bw.Write(Encoding.ASCII.GetBytes(tagpath));
+                bw.Write(tagpath);
                 bw.Write(nan);
 
                 ms.Position = 0;
                 fs.Position = 0;
                 ms.CopyTo(ds);
+                
             }
+
+
+
+
         }
+
 
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            var fbd = new FolderBrowserDialog {ShowNewFolderButton = true};
+            var fbd = new FolderBrowserDialog { ShowNewFolderButton = true };
 
-            if (fbd.ShowDialog() == DialogResult.OK)
-                dir.Text = fbd.SelectedPath;
+            if (fbd.ShowDialog() == DialogResult.OK) dir.Text = fbd.SelectedPath;
         }
 
         private void Looper_Load(object sender, EventArgs e)
@@ -101,11 +108,12 @@ namespace PorkChop
             ForceMaps();
         }
 
+
         private void ForceMaps()
         {
             if (File.Exists(settings_path))
             {
-                tagsdir     = File.ReadAllText(settings_path);
+                tagsdir = File.ReadAllText(settings_path);
                 tagdir.Text = "Tags Folder - " + tagsdir;
             }
             else
@@ -114,20 +122,34 @@ namespace PorkChop
                 setMapsFolder();
                 ForceMaps();
             }
+
+
+
         }
+
+
 
         private void setMapsFolder()
         {
-            var fbd = new FolderBrowserDialog();
+
+
+
+
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
             fbd.ShowNewFolderButton = false;
 
-            if (fbd.ShowDialog() == DialogResult.OK)
+
+            if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 tagsdir = fbd.SelectedPath;
 
+
                 MessageBox.Show(tagsdir);
-                File.WriteAllText(settings_path, tagsdir);
+                System.IO.File.WriteAllText(settings_path, tagsdir);
             }
+
+            
+
         }
 
         private void Button3_Click(object sender, EventArgs e)
