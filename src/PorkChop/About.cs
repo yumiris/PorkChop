@@ -1,5 +1,5 @@
 ﻿/**
- * Copyright (c) 2019 Emilian Roman
+ * Copyright (c) 2019 DeadHamster35
  * 
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -18,46 +18,15 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-using System;
-using System.IO;
-using PorkChop.Library;
+using System.Windows.Forms;
 
-namespace PorkChop.CLI
+namespace PorkChop
 {
-    /// <summary>
-    ///   CLI for PorkChop.
-    /// </summary>
-    internal static class Program
+    public partial class About : Form
     {
-        public static void Main(string[] args)
+        public About()
         {
-            if (args.Length < 2)
-                Exit(1, "Not enough args.");
-
-            var mp3 = args[0];
-            var dir = args[1];
-
-            if (!File.Exists(mp3))
-                Exit(2, "MP3 not found.");
-
-            if (!Directory.Exists(dir))
-                Exit(3, "Directory not found.");
-
-            try
-            {
-                
-
-            }
-            catch (Exception e)
-            {
-                Exit(4, e.Message);
-            }
-
-            void Exit(int code, string message)
-            {
-                Console.WriteLine(message);
-                Environment.Exit(code);
-            }
+            InitializeComponent();
         }
     }
 }

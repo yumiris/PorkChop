@@ -21,10 +21,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Windows.Forms;
 using System.IO;
 using Be.IO;
-using System.Threading.Tasks;
 using static System.Console;
 
 namespace PorkChop.Library
@@ -34,17 +32,6 @@ namespace PorkChop.Library
     /// </summary>
     public static class Codec
     {
-        public class Configuration
-        {
-            public string Mp3File    { get; set; }
-            public string SoundName  { get; set; }
-            public string SampleRate { get; set; }
-            public string Channel    { get; set; }
-            public bool   SoundType  { get; set; }
-            public bool   Split      { get; set; }
-            public string SoundTime  { get; set; }
-        }
-
         /// <summary>
         ///     Split and encodes an inbound MP3 file.
         /// </summary>
@@ -117,11 +104,9 @@ namespace PorkChop.Library
 
             void Execute()
             {
-
-                string tempfolder = temp.ToString();
+                var tempfolder = temp.ToString();
 
                 MakeList(tempfolder);
-                
 
                 var processes = split
                     ? new List<Process> /* split up sound */
@@ -134,7 +119,8 @@ namespace PorkChop.Library
                         new Process
                         {
                             Executable = Path.Combine(Environment.CurrentDirectory, "conv.exe"),
-                            Arguments  = $"-of {samplerate} -oc{channel} -ob16 -idel {temp}.wav temp\\{tempfolder}\\{temp}.ogg"
+                            Arguments =
+                                $"-of {samplerate} -oc{channel} -ob16 -idel {temp}.wav temp\\{tempfolder}\\{temp}.ogg"
                         },
                         new Process
                         {
@@ -144,7 +130,8 @@ namespace PorkChop.Library
                         new Process
                         {
                             Executable = Path.Combine(Environment.CurrentDirectory, "conv.exe"),
-                            Arguments  = $"-llw temp\\{tempfolder}\\CONVLIST.LST -of {samplerate} -oc{channel} -ob16  -idel"
+                            Arguments =
+                                $"-llw temp\\{tempfolder}\\CONVLIST.LST -of {samplerate} -oc{channel} -ob16  -idel"
                         }
                     }
                     : new List<Process> /* straight sound */
@@ -157,7 +144,8 @@ namespace PorkChop.Library
                         new Process
                         {
                             Executable = Path.Combine(Environment.CurrentDirectory, "conv.exe"),
-                            Arguments  = $"-of {samplerate} -oc{channel} -ob16 -idel {temp}.wav temp\\{tempfolder}\\{temp}.wav"
+                            Arguments =
+                                $"-of {samplerate} -oc{channel} -ob16 -idel {temp}.wav temp\\{tempfolder}\\{temp}.wav"
                         }
                     };
 
@@ -167,24 +155,24 @@ namespace PorkChop.Library
                     process.Start().WaitForExit();
                     WriteLine("EXECUTE: Finished - " + process.Executable);
                 }
+
                 CleanUp(tempfolder);
             }
 
-
-            void MakeList (string listfolder)
+            void MakeList(string listfolder)
             {
-                string listdir = Path.Combine(Environment.CurrentDirectory, "temp", listfolder);
-                string listfile = Path.Combine(listdir, "CONVLIST.LST");
-                
-                string writetext = "";
+                var listdir  = Path.Combine(Environment.CurrentDirectory, "temp", listfolder);
+                var listfile = Path.Combine(listdir,                      "CONVLIST.LST");
+
+                var writetext = "";
 
                 Directory.CreateDirectory(listdir);
-                System.IO.File.WriteAllText(listfile,"");
+                File.WriteAllText(listfile, "");
 
                 for (var i = 0; i != 60; i++)
                 {
-                    writetext = "temp\\" + listfolder +"\\"+ i.ToString("000") + ".ogg"+Environment.NewLine;
-                    System.IO.File.AppendAllText(listfile, writetext);
+                    writetext = "temp\\" + listfolder + "\\" + i.ToString("000") + ".ogg" + Environment.NewLine;
+                    File.AppendAllText(listfile, writetext);
                 }
             }
 
@@ -228,11 +216,8 @@ namespace PorkChop.Library
                     Executable = Path.Combine(Environment.CurrentDirectory, "tool.exe"),
                     Arguments  = "sounds " + soundname + " ogg 1"
                 }.Start().WaitForExit();
-
-                
             }
 
-            
             /**
              * Splits up the audio data.
              */
@@ -252,14 +237,12 @@ namespace PorkChop.Library
                     ms.Position = 0;
 
                     bw.BaseStream.Seek(68, SeekOrigin.Begin);
-                    bw.Write(stype ? (short)32 : (short)4); /* IDtype */
+                    bw.Write(stype ? (short) 32 : (short) 4); /* IDtype */
 
                     if (split)
                     {
                         bw.BaseStream.Seek(64, SeekOrigin.Begin);
                         bw.Write(2);
-
-
 
                         br.BaseStream.Seek(288, SeekOrigin.Begin);
                         permutation_count = br.ReadInt32();
@@ -269,9 +252,9 @@ namespace PorkChop.Library
                         for (var i = 0; i < permutation_count; i++)
                         {
                             if (i != permutation_count - 1)
-                                bw.Write((short)(i + 1));
+                                bw.Write((short) (i + 1));
                             else
-                                bw.Write((short)-1);
+                                bw.Write((short) -1);
 
                             bw.BaseStream.Seek(122, SeekOrigin.Current);
                         }
@@ -282,6 +265,17 @@ namespace PorkChop.Library
                     ms.CopyTo(fs);
                 }
             }
+        }
+
+        public class Configuration
+        {
+            public string Mp3File    { get; set; }
+            public string SoundName  { get; set; }
+            public string SampleRate { get; set; }
+            public string Channel    { get; set; }
+            public bool   SoundType  { get; set; }
+            public bool   Split      { get; set; }
+            public string SoundTime  { get; set; }
         }
 
         /// <summary>

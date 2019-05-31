@@ -1,21 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.202
-MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PorkChop", "PorkChop\PorkChop.csproj", "{3758A650-4444-4B91-A2FC-A8FB872229BC}"
-	ProjectSection(ProjectDependencies) = postProject
-		{F618CFE7-9B0A-49DF-8C83-553D605D2A79} = {F618CFE7-9B0A-49DF-8C83-553D605D2A79}
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8BED16F1-6BBF-4A49-8620-FA3B0AD2E794}"
-	ProjectSection(SolutionItems) = preProject
-		porkchop.ico = porkchop.ico
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PorkChop.Library", "PorkChop.Library\PorkChop.Library.csproj", "{56FD1472-0D5A-49AC-8E0A-7173A67126DF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PorkChop.CLI", "PorkChop.CLI\PorkChop.CLI.csproj", "{F618CFE7-9B0A-49DF-8C83-553D605D2A79}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,15 +18,5 @@ Global
 		{56FD1472-0D5A-49AC-8E0A-7173A67126DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56FD1472-0D5A-49AC-8E0A-7173A67126DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56FD1472-0D5A-49AC-8E0A-7173A67126DF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F618CFE7-9B0A-49DF-8C83-553D605D2A79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F618CFE7-9B0A-49DF-8C83-553D605D2A79}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F618CFE7-9B0A-49DF-8C83-553D605D2A79}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F618CFE7-9B0A-49DF-8C83-553D605D2A79}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {56EE1ED5-7156-45F1-9770-5F8A265E4C3F}
 	EndGlobalSection
 EndGlobal
